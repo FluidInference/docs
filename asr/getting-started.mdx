@@ -3,13 +3,19 @@ title: ASR Getting Started
 description: Batch and streaming transcription with Parakeet models.
 ---
 
+## When to Use
+
+- **Transcribing recordings or files** — Use batch ASR (this page). 210x real-time, 2.5% WER on English.
+- **Live captions while user speaks** — Use [Streaming ASR](/asr/streaming) with Parakeet EOU.
+- **Domain-specific terms keep getting wrong** — Add [Custom Vocabulary](/asr/custom-vocabulary) boosting (91.7% F-score on earnings calls).
+
 ## Models
 
-| Model | Languages | Use Case |
-|-------|-----------|----------|
-| **Parakeet TDT v3** | 25 European languages | Default — multilingual batch transcription |
-| **Parakeet TDT v2** | English only | Higher English recall |
-| **Parakeet EOU** | English | Streaming with end-of-utterance detection |
+| Model | Languages | Speed | Accuracy | Use Case |
+|-------|-----------|-------|----------|----------|
+| **Parakeet TDT v3** | 25 European | 210x RTFx | 14.7% avg WER | Default — multilingual |
+| **Parakeet TDT v2** | English only | 146x RTFx | 2.1% WER | Best English accuracy |
+| **Parakeet EOU** | English | 12x RTFx | 4.9% WER | Real-time streaming |
 
 ## Batch Transcription
 

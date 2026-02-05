@@ -3,9 +3,21 @@ title: VAD Getting Started
 description: Voice activity detection with Silero VAD v6 on CoreML.
 ---
 
-## Overview
+## When to Use
 
-FluidAudio ships Silero VAD v6 converted for CoreML with timestamp extraction and streaming hysteresis. The model processes 256ms windows at 16 kHz.
+- **Pre-process audio before ASR** — Segment files into speech regions, skip silence. Reduces ASR processing by 30-50%.
+- **Real-time speech detection** — Trigger recording or UI when user starts/stops speaking.
+- **Improve diarization quality** — Filter noise before speaker embedding extraction. Reduces false speakers by 20-40%.
+
+## Specs
+
+| Metric | Value |
+|--------|-------|
+| Model | Silero VAD v6 |
+| Window size | 256ms |
+| Speed | 1,230x real-time |
+| Accuracy | 96% (VOiCES), 94% (MUSAN) |
+| Memory | Minimal (runs on CPU) |
 
 Model: [FluidInference/silero-vad-coreml](https://huggingface.co/FluidInference/silero-vad-coreml)
 

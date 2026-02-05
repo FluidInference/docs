@@ -3,6 +3,12 @@ title: Diarization Getting Started
 description: Speaker diarization — identify who spoke when in audio.
 ---
 
+## When to Use
+
+- **Post-recording analysis** (meetings, interviews) — Use the [Offline pipeline](/diarization/offline-pipeline). 15% DER, 122x real-time.
+- **Real-time "who's speaking now"** — Use [Streaming diarization](/diarization/streaming). 26% DER at 5s chunks. Only use when you critically need real-time labels — offline is more accurate and still very fast.
+- **Simple 2-4 speaker conversations** — Consider [Sortformer](/diarization/sortformer). Single model, no clustering, 32% DER.
+
 ## Quick Start
 
 ```swift

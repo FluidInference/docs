@@ -3,9 +3,21 @@ title: Kokoro TTS
 description: High-quality text-to-speech synthesis with 48 voices.
 ---
 
-## Overview
+## When to Use
 
-Kokoro is a high-quality TTS backend (82M params, 48 voices). It generates all frames at once using flow matching over mel spectrograms, then converts to audio with the Vocos vocoder.
+- **Best quality, full generation** — Kokoro generates all frames at once. Use when you can wait for complete audio before playback.
+- **Need streaming/immediate playback** — Use [PocketTTS](/tts/pocket-tts) instead (~80ms to first audio).
+
+## Specs
+
+| Metric | Value |
+|--------|-------|
+| Parameters | 82M |
+| Voices | 48 |
+| Speed | 23x RTFx |
+| Peak RAM | 1.5 GB |
+| Architecture | Flow matching + Vocos vocoder |
+| Phonemization | eSpeak-NG (GPL-3.0) |
 
 Model: [FluidInference/kokoro-82m-coreml](https://huggingface.co/FluidInference/kokoro-82m-coreml)
 
