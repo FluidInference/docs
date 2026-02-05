@@ -7,15 +7,30 @@
   },
   "logo": {
     "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "dark": "/logo/dark.svg",
+    "href": "https://www.fluidinference.com"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.ico",
   "colors": {
     "primary": "#008574",
     "light": "#008574",
     "dark": "#006746"
   },
+  "font": {
+    "headings": {
+      "family": "JetBrains Mono",
+      "weight": 700
+    },
+    "body": {
+      "family": "JetBrains Mono",
+      "weight": 400
+    }
+  },
   "topbarLinks": [
+    {
+      "name": "Hugging Face",
+      "url": "https://huggingface.co/FluidInference"
+    },
     {
       "name": "Discord",
       "url": "https://discord.gg/WNsvaCtmDe"
@@ -108,8 +123,16 @@
       }
     ]
   },
+  "metadata": {
+    "og:site_name": "Fluid Inference Docs",
+    "og:image": "https://www.fluidinference.com/og-image",
+    "og:description": "Ambient AI on device. Build applications that sense, learn, and respond—fast and private, across platforms.",
+    "twitter:card": "summary_large_image",
+    "twitter:image": "https://www.fluidinference.com/og-image"
+  },
   "footerSocials": {
-    "github": "https://github.com/FluidInference/FluidAudio",
-    "discord": "https://discord.gg/WNsvaCtmDe"
+    "github": "https://github.com/FluidInference",
+    "discord": "https://discord.gg/WNsvaCtmDe",
+    "website": "https://www.fluidinference.com"
   }
 }
