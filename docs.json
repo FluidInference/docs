@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "FluidAudio",
+  "name": "Fluid Inference",
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
@@ -20,70 +20,87 @@
   ],
   "topbarCtaButton": {
     "name": "GitHub",
-    "url": "https://github.com/FluidInference/FluidAudio"
+    "url": "https://github.com/FluidInference"
   },
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": "Getting Started",
-        "pages": [
-          "introduction",
-          "quickstart",
-          "installation",
-          "configuration"
+        "tab": "FluidAudio",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "installation",
+              "configuration"
+            ]
+          },
+          {
+            "group": "Speech Recognition (ASR)",
+            "pages": [
+              "asr/getting-started",
+              "asr/streaming",
+              "asr/custom-vocabulary",
+              "asr/custom-pronunciation",
+              "asr/manual-model-loading"
+            ]
+          },
+          {
+            "group": "Speaker Diarization",
+            "pages": [
+              "diarization/getting-started",
+              "diarization/offline-pipeline",
+              "diarization/streaming",
+              "diarization/speaker-manager",
+              "diarization/sortformer"
+            ]
+          },
+          {
+            "group": "Voice Activity Detection",
+            "pages": [
+              "vad/getting-started",
+              "vad/streaming",
+              "vad/segmentation-config"
+            ]
+          },
+          {
+            "group": "Text-to-Speech (TTS)",
+            "pages": [
+              "tts/kokoro",
+              "tts/pocket-tts",
+              "tts/ssml",
+              "tts/custom-pronunciation"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/audio-conversion",
+              "guides/manual-model-loading"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/api",
+              "reference/cli",
+              "reference/models",
+              "reference/benchmarks"
+            ]
+          }
         ]
       },
       {
-        "group": "Speech Recognition (ASR)",
-        "pages": [
-          "asr/getting-started",
-          "asr/streaming",
-          "asr/custom-vocabulary",
-          "asr/custom-pronunciation",
-          "asr/manual-model-loading"
-        ]
-      },
-      {
-        "group": "Speaker Diarization",
-        "pages": [
-          "diarization/getting-started",
-          "diarization/offline-pipeline",
-          "diarization/streaming",
-          "diarization/speaker-manager",
-          "diarization/sortformer"
-        ]
-      },
-      {
-        "group": "Voice Activity Detection",
-        "pages": [
-          "vad/getting-started",
-          "vad/streaming",
-          "vad/segmentation-config"
-        ]
-      },
-      {
-        "group": "Text-to-Speech (TTS)",
-        "pages": [
-          "tts/kokoro",
-          "tts/pocket-tts",
-          "tts/ssml",
-          "tts/custom-pronunciation"
-        ]
-      },
-      {
-        "group": "Guides",
-        "pages": [
-          "guides/audio-conversion",
-          "guides/manual-model-loading"
-        ]
-      },
-      {
-        "group": "Reference",
-        "pages": [
-          "reference/api",
-          "reference/cli",
-          "reference/models",
-          "reference/benchmarks"
+        "tab": "möbius",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "mobius/getting-started",
+              "mobius/converting-models"
+            ]
+          }
         ]
       }
     ]
