@@ -9,7 +9,7 @@ FluidAudio is a Swift SDK for fully local, low-latency audio AI on Apple devices
 
 | Capability | Model | Speed | Accuracy | Languages |
 |-----------|-------|-------|----------|-----------|
-| **Transcription** | Parakeet TDT 0.6B | 210x RTFx | 2.5% WER (en), 14.7% avg | 25 European |
+| **Transcription** | Parakeet TDT 0.6B | 210x RTFx | 2.5% WER (en), 14.7% avg (25 lang) | 25 European |
 | **Streaming ASR** | Parakeet EOU 120M | 12x RTFx | 4.9% WER (en) | English |
 | **Speaker Diarization** | Pyannote CoreML | 122x RTFx | 15% DER (offline) | Language-agnostic |
 | **Streaming Diarization** | Sortformer | 127x RTFx | 31.7% DER | Language-agnostic |
@@ -17,7 +17,7 @@ FluidAudio is a Swift SDK for fully local, low-latency audio AI on Apple devices
 | **Text-to-Speech** | Kokoro 82M | 23x RTFx | 48 voices | English |
 | **Text-to-Speech** | PocketTTS 155M | Streaming | ~80ms first audio | English |
 
-All benchmarks on M4 Pro. See [full benchmarks](/reference/benchmarks) for per-language breakdowns and device comparisons.
+All benchmarks on M4 Pro. ASR on [LibriSpeech](https://huggingface.co/datasets/openslr/librispeech_asr) / [FLEURS](https://huggingface.co/datasets/google/fleurs), diarization on [VoxConverse](https://www.robots.ox.ac.uk/~vgg/data/voxconverse/) / [AMI](https://groups.inf.ed.ac.uk/ami/corpus/), VAD on [VOiCES](https://iqtlabs.github.io/voices/) / [MUSAN](https://www.openslr.org/17/). See [full benchmarks](/reference/benchmarks) for per-language breakdowns and device comparisons.
 
 ## When to Use Which
 
