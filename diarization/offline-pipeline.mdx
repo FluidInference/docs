@@ -55,6 +55,19 @@ let result = try await manager.process(url)
 - `postProcessing` — Minimum gap duration
 - `export` — Optional `embeddingsPath` for JSON dump
 
+## Benchmarks
+
+[VoxConverse](https://www.robots.ox.ac.uk/~vgg/data/voxconverse/) (232 clips, multi-speaker conversations). Segmentation uses 10s windows:
+
+| Config | Audio Length | DER | JER | RTFx |
+|--------|------------|-----|-----|------|
+| Step ratio 0.2, min duration 1.0s (default) | 10s windows | 15.1% | 39.4% | 122x |
+| Step ratio 0.1, min duration 0s (max accuracy) | 10s windows | 13.9% | 42.8% | 65x |
+
+Default is ~2x faster for only ~1.2% worse DER. Use step ratio 0.1 for critical accuracy.
+
+Reference: pyannote community-1 on CPU is 1.5-2x RTFx, on MPS is 20-25x RTFx. FluidAudio on ANE is 65-122x RTFx.
+
 ## CLI
 
 ```bash

@@ -15,8 +15,6 @@ description: Voice activity detection with Silero VAD v6 on CoreML.
 |--------|-------|
 | Model | Silero VAD v6 |
 | Window size | 256ms |
-| Speed | 1,230x real-time |
-| Accuracy | 96% (VOiCES), 94% (MUSAN) |
 | Memory | Minimal (runs on CPU) |
 
 Model: [FluidInference/silero-vad-coreml](https://huggingface.co/FluidInference/silero-vad-coreml)
@@ -75,6 +73,28 @@ configuration.computeUnits = .cpuOnly
 let vadModel = try MLModel(contentsOf: modelURL, configuration: configuration)
 let manager = VadManager(config: .default, vadModel: vadModel)
 ```
+
+## Benchmarks
+
+[VOiCES](https://iqtlabs.github.io/voices/) (25 files, clean speech):
+
+| Metric | Value |
+|--------|-------|
+| Accuracy | 96.0% |
+| Precision | 100.0% |
+| Recall | 95.8% |
+| F1-Score | 97.9% |
+| RTFx | 1,230x |
+
+[MUSAN](https://www.openslr.org/17/) (2,016 files, mixed noise/music/speech):
+
+| Metric | Value |
+|--------|-------|
+| Accuracy | 94.2% |
+| Precision | 92.6% |
+| Recall | 78.9% |
+| F1-Score | 85.2% |
+| RTFx | 1,221x |
 
 ## CLI
 

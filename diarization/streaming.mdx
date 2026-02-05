@@ -82,6 +82,21 @@ class RealTimeDiarizer {
 }
 ```
 
+## Benchmarks
+
+[AMI SDM](https://groups.inf.ed.ac.uk/ami/corpus/) (meeting recordings, single distant microphone):
+
+| Audio Length | Overlap | Threshold | DER | RTFx | Best For |
+|-------------|---------|-----------|-----|------|----------|
+| 5s chunks | 0s | 0.8 | 26.2% | 223x | Best accuracy/speed balance |
+| 10s chunks | 0s | 0.7 | 33.3% | 392x | Higher throughput |
+| 3s chunks | 1s | 0.85 | 49.7% | 51x | Lowest latency |
+| 5s chunks | 2s | 0.8 | 43.0% | 69x | — |
+
+<Warning>
+Streaming diarization is 10-15% worse DER than offline. Only use streaming when you critically need real-time speaker labels. For most apps, offline is more than fast enough.
+</Warning>
+
 ## Tips
 
 - Keep one `DiarizerManager` per stream for consistent speaker IDs

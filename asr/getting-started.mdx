@@ -11,11 +11,11 @@ description: Batch and streaming transcription with Parakeet models.
 
 ## Models
 
-| Model | Languages | Speed | Accuracy | Use Case |
-|-------|-----------|-------|----------|----------|
-| **Parakeet TDT v3** | 25 European | 210x RTFx | 14.7% avg WER | Default — multilingual |
-| **Parakeet TDT v2** | English only | 146x RTFx | 2.1% WER | Best English accuracy |
-| **Parakeet EOU** | English | 12x RTFx | 4.9% WER | Real-time streaming |
+| Model | Languages | Audio Length | Use Case |
+|-------|-----------|-------------|----------|
+| **Parakeet TDT v3** | 25 European | ~15s chunks | Default — multilingual |
+| **Parakeet TDT v2** | English only | ~15s chunks | Best English accuracy |
+| **Parakeet EOU** | English | 320ms chunks | Real-time streaming |
 
 ## Batch Transcription
 
@@ -60,6 +60,24 @@ Both share the same API surface—set `AsrModelVersion` in code or pass `--model
 ```swift
 let models = try await AsrModels.downloadAndLoad(version: .v2)
 ```
+
+## Benchmarks
+
+[LibriSpeech test-clean](https://huggingface.co/datasets/openslr/librispeech_asr) (2,620 files, 5.4h audio):
+
+| Model | WER | RTFx |
+|-------|-----|------|
+| Parakeet TDT v3 | 2.5% | 156x |
+| Parakeet TDT v2 | 2.1% | 146x |
+| Parakeet EOU (320ms) | 4.9% | 12x |
+
+[FLEURS](https://huggingface.co/datasets/google/fleurs) (14,085 files, 44.9h audio, 25 languages):
+
+| Model | Avg WER | RTFx |
+|-------|---------|------|
+| Parakeet TDT v3 | 14.7% | 210x |
+
+See [full benchmarks](/reference/benchmarks) for per-language breakdown.
 
 ## CLI
 

@@ -7,7 +7,7 @@ description: Speaker diarization — identify who spoke when in audio.
 
 - **Post-recording analysis** (meetings, interviews) — Use the [Offline pipeline](/diarization/offline-pipeline). 15% DER, 122x real-time.
 - **Real-time "who's speaking now"** — Use [Streaming diarization](/diarization/streaming). 26% DER at 5s chunks. Only use when you critically need real-time labels — offline is more accurate and still very fast.
-- **Simple 2-4 speaker conversations** — Consider [Sortformer](/diarization/sortformer). Single model, no clustering, 32% DER.
+- **Simple 2-4 speaker conversations** — Consider [Sortformer](/diarization/sortformer). Single model, no clustering, 32% DER. Better in noisy environments but limited to 4 speakers max — does not work well with 5+ people or heavy crosstalk.
 
 ## Quick Start
 
@@ -74,13 +74,24 @@ let models = try await DiarizerModels.load(
 )
 ```
 
-## Performance
+## Benchmarks
 
-| Device | RTFx | Notes |
-|--------|------|-------|
-| M2 MacBook Air | 150x | Apple Neural Engine |
-| M1 iPad Pro | 120x | Neural Engine |
-| iPhone 14 Pro | 80x | Neural Engine |
+[VoxConverse](https://www.robots.ox.ac.uk/~vgg/data/voxconverse/) (232 clips, multi-speaker conversations):
+
+| Pipeline | Audio Length | DER | RTFx |
+|----------|------------|-----|------|
+| Offline (default) | 10s windows | 15.1% | 122x |
+| Offline (max accuracy) | 10s windows | 13.9% | 65x |
+| Streaming | 5s chunks | 26.2% | 223x |
+| Sortformer | 30.4s chunks | 31.7% | 127x |
+
+Device comparison (offline pipeline, default config):
+
+| Device | RTFx |
+|--------|------|
+| M2 MacBook Air | 150x |
+| M1 iPad Pro | 120x |
+| iPhone 14 Pro | 80x |
 
 ## CLI
 
