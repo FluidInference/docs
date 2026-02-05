@@ -1,0 +1,84 @@
+---
+title: Diarization Getting Started
+description: Speaker diarization — identify who spoke when in audio.
+---
+
+## Quick Start
+
+```swift
+import FluidAudio
+
+let models = try await DiarizerModels.downloadIfNeeded()
+let diarizer = DiarizerManager()
+diarizer.initialize(models: models)
+
+let samples = try AudioConverter().resampleAudioFile(
+    URL(fileURLWithPath: "meeting.wav")
+)
+let result = try diarizer.performCompleteDiarization(samples)
+
+for segment in result.segments {
+    print("Speaker \(segment.speakerId): \(segment.startTimeSeconds)s - \(segment.endTimeSeconds)s")
+}
+```
+
+## Configuration
+
+```swift
+let config = DiarizerConfig(
+    clusteringThreshold: 0.7,      // Speaker separation (0.0-1.0)
+    minSpeechDuration: 1.0,         // Minimum segment duration (seconds)
+    minSilenceGap: 0.5,             // Minimum silence between speakers
+    minActiveFramesCount: 10.0,     // Minimum active frames
+    debugMode: false
+)
+let diarizer = DiarizerManager(config: config)
+```
+
+## Known Speaker Recognition
+
+Pre-load speaker profiles for identification:
+
+```swift
+let aliceAudio = loadAudioFile("alice_sample.wav")
+let aliceEmbedding = try diarizer.extractEmbedding(aliceAudio)
+
+let alice = Speaker(id: "Alice", name: "Alice", currentEmbedding: aliceEmbedding)
+let bob = Speaker(id: "Bob", name: "Bob", currentEmbedding: bobEmbedding)
+diarizer.speakerManager.initializeKnownSpeakers([alice, bob])
+
+// Will use "Alice" instead of "Speaker_1" when matched
+let result = try diarizer.performCompleteDiarization(audioSamples)
+```
+
+## Manual Model Loading
+
+Stage Core ML bundles for offline deployment:
+
+```swift
+let basePath = "/opt/models/speaker-diarization-coreml"
+let segmentation = URL(fileURLWithPath: basePath)
+    .appendingPathComponent("pyannote_segmentation.mlmodelc")
+let embedding = URL(fileURLWithPath: basePath)
+    .appendingPathComponent("wespeaker_v2.mlmodelc")
+
+let models = try await DiarizerModels.load(
+    localSegmentationModel: segmentation,
+    localEmbeddingModel: embedding
+)
+```
+
+## Performance
+
+| Device | RTFx | Notes |
+|--------|------|-------|
+| M2 MacBook Air | 150x | Apple Neural Engine |
+| M1 iPad Pro | 120x | Neural Engine |
+| iPhone 14 Pro | 80x | Neural Engine |
+
+## CLI
+
+```bash
+swift run fluidaudio process meeting.wav --output results.json --threshold 0.6
+swift run fluidaudio diarization-benchmark --auto-download
+```

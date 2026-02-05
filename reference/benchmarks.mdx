@@ -1,0 +1,63 @@
+---
+title: Benchmarks
+description: Performance metrics on Apple Silicon.
+---
+
+All benchmarks run on M4 Pro MacBook Pro unless noted.
+
+## ASR
+
+| Metric | Value |
+|--------|-------|
+| RTFx | ~209.8x |
+| Average WER | 14.7% across 25 languages |
+| English WER (v2) | Lower than v3 on rare words |
+
+## VAD
+
+| Metric | Value |
+|--------|-------|
+| RTFx | ~1230x |
+| Accuracy | 96% on VOiCES dataset |
+
+## Diarization
+
+### Online (Streaming)
+
+| Config | DER |
+|--------|-----|
+| 10s chunks, threshold 0.7 | 17.7% |
+| 5s chunks | ~22% |
+
+### Offline (VBx Pipeline)
+
+| Config | DER |
+|--------|-----|
+| Full pipeline, 10s window | 15-18% |
+
+### Sortformer
+
+| Metric | Value |
+|--------|-------|
+| Average DER | 31.7% (VoxConverse) |
+| RTFx | 126.7x |
+
+## TTS
+
+| Backend | Pipeline | Notes |
+|---------|----------|-------|
+| Kokoro | Swift Core ML | All frames at once, lowest total latency |
+| PocketTTS | Swift Core ML | Autoregressive, ~80ms to first audio |
+
+## Running Benchmarks
+
+```bash
+# ASR
+swift run -c release fluidaudio asr-benchmark --subset test-clean --max-files 100
+
+# Diarization
+swift run -c release fluidaudio diarization-benchmark --auto-download
+
+# VAD
+swift run -c release fluidaudio vad-benchmark --num-files 40
+```

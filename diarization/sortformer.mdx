@@ -1,0 +1,36 @@
+---
+title: Sortformer
+description: NVIDIA's end-to-end streaming speaker diarization model.
+---
+
+## Overview
+
+Sortformer is NVIDIA's end-to-end streaming speaker diarization model, converted to CoreML. Unlike the pyannote pipeline (segmentation + clustering), Sortformer is a single neural network with 4 fixed speaker slots.
+
+Model: [FluidInference/diar-streaming-sortformer-coreml](https://huggingface.co/FluidInference/diar-streaming-sortformer-coreml)
+
+## Key Properties
+
+- 4 fixed speaker slots with real-time inference
+- No separate segmentation + clustering stages
+- Streaming only (no offline mode)
+- Best for scenarios with 4 or fewer speakers
+
+## Performance
+
+AMI SDM dataset with NVIDIA high-latency config (30.4s chunks):
+
+| Metric | Value |
+|--------|-------|
+| Average DER | 31.7% |
+| Average Miss | 21.5% |
+| Average FA | 0.5% |
+| Average SE | 9.7% |
+| Average RTFx | 126.7 |
+
+## CLI
+
+```bash
+swift run fluidaudio sortformer-benchmark \
+  --nvidia-high-latency --hf --auto-download
+```
