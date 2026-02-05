@@ -1,0 +1,81 @@
+---
+title: VAD Getting Started
+description: Voice activity detection with Silero VAD v6 on CoreML.
+---
+
+## Overview
+
+FluidAudio ships Silero VAD v6 converted for CoreML with timestamp extraction and streaming hysteresis. The model processes 256ms windows at 16 kHz.
+
+Model: [FluidInference/silero-vad-coreml](https://huggingface.co/FluidInference/silero-vad-coreml)
+
+## Offline Segmentation
+
+```swift
+import FluidAudio
+
+let manager = try await VadManager(
+    config: VadConfig(defaultThreshold: 0.75)
+)
+
+let samples = try AudioConverter().resampleAudioFile(
+    URL(fileURLWithPath: "audio.wav")
+)
+
+var segmentation = VadSegmentationConfig.default
+segmentation.minSpeechDuration = 0.25
+segmentation.minSilenceDuration = 0.4
+segmentation.speechPadding = 0.12
+
+let segments = try await manager.segmentSpeech(samples, config: segmentation)
+for (index, segment) in segments.enumerated() {
+    print(String(format: "Segment %02d: %.2f-%.2fs", index + 1, segment.startTime, segment.endTime))
+}
+```
+
+### Get Audio Clips
+
+```swift
+let clips = try await manager.segmentSpeechAudio(samples, config: segmentation)
+print("Extracted \(clips.count) buffered segments ready for ASR")
+```
+
+### Chunk-Level Probabilities
+
+```swift
+let results = try await manager.process(samples)
+for (index, chunk) in results.enumerated() {
+    print(String(format: "Chunk %02d: prob=%.3f", index, chunk.probability))
+}
+```
+
+## Manual Model Loading
+
+Stage the Core ML bundle for offline environments:
+
+```swift
+let modelURL = URL(
+    fileURLWithPath: "/opt/models/silero-vad-coreml/silero-vad-unified-256ms-v6.0.0.mlmodelc",
+    isDirectory: true
+)
+var configuration = MLModelConfiguration()
+configuration.computeUnits = .cpuOnly
+let vadModel = try MLModel(contentsOf: modelURL, configuration: configuration)
+let manager = VadManager(config: .default, vadModel: vadModel)
+```
+
+## CLI
+
+```bash
+# Offline segmentation
+swift run fluidaudio vad-analyze audio.wav
+
+# Streaming mode
+swift run fluidaudio vad-analyze audio.wav --streaming --min-silence-ms 300
+
+# Both modes
+swift run fluidaudio vad-analyze audio.wav --mode both
+
+# Benchmark
+swift run fluidaudio vad-benchmark --num-files 50 --threshold 0.3
+```

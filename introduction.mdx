@@ -1,0 +1,35 @@
+---
+title: Introduction
+description: Frontier CoreML audio models in your apps — text-to-speech, speech-to-text, voice activity detection, and speaker diarization.
+---
+
+FluidAudio is a Swift SDK for fully local, low-latency audio AI on Apple devices, with inference offloaded to the Apple Neural Engine (ANE), resulting in less memory and generally faster inference.
+
+The SDK includes state-of-the-art speaker diarization, transcription, and voice activity detection via open-source models (MIT/Apache 2.0) that can be integrated with just a few lines of code. Models are optimized for background processing, ambient computing and always-on workloads by running inference on the ANE, minimizing CPU usage and avoiding GPU/MPS entirely.
+
+## Highlights
+
+- **Automatic Speech Recognition (ASR)**: Parakeet TDT v3 (0.6b) for transcription; supports all 25 European languages
+- **Speaker Diarization (Online + Offline)**: Speaker separation and identification across audio streams
+- **Voice Activity Detection (VAD)**: Voice activity detection with Silero models
+- **Text-to-Speech (TTS)**: Kokoro and PocketTTS backends for speech synthesis
+- **Apple Neural Engine**: Models run efficiently on Apple's ANE for maximum performance with minimal power consumption
+- **Open-Source Models**: All models are publicly available on [HuggingFace](https://huggingface.co/FluidInference)
+
+## Platform Support
+
+| Platform | Package |
+|----------|---------|
+| **Swift (iOS / macOS)** | [FluidAudio](https://github.com/FluidInference/FluidAudio) |
+| **React Native / Expo** | [@fluidinference/react-native-fluidaudio](https://github.com/FluidInference/react-native-fluidaudio) |
+| **Rust / Tauri** | [fluidaudio-rs](https://github.com/FluidInference/fluidaudio-rs) |
+
+## Requirements
+
+- macOS 14+ / iOS 17+
+- Swift 5.10+
+- Apple Silicon recommended for optimal performance
+
+## Model Conversion
+
+Want to convert your own model? Check [mobius](https://github.com/FluidInference/mobius).

@@ -1,0 +1,72 @@
+---
+title: PocketTTS
+description: Autoregressive TTS with dynamic audio chunking and streaming output.
+---
+
+## Overview
+
+PocketTTS (~155M params) is an autoregressive TTS backend that generates audio frame-by-frame. No espeak dependency — uses SentencePiece tokenization directly. Audio starts streaming ~80ms after prefill.
+
+Model: [FluidInference/pocket-tts-coreml](https://huggingface.co/FluidInference/pocket-tts-coreml)
+
+## Quick Start
+
+```swift
+import FluidAudioTTS
+
+let manager = PocketTtsManager()
+try await manager.initialize()
+
+let audioData = try await manager.synthesize(text: "Hello, world!")
+
+try await manager.synthesizeToFile(
+    text: "Hello, world!",
+    outputURL: URL(fileURLWithPath: "/tmp/output.wav")
+)
+```
+
+## Architecture
+
+```
+PocketTtsManager.synthesize(text:)
+  → chunkText() — split into max 50 token chunks
+  → loadMimiInitialState() — 23 streaming state tensors
+  → FOR EACH CHUNK:
+      → tokenizer.encode() — SentencePiece
+      → embedTokens() — table lookup
+      → prefillKVCache() — 125 voice + N text tokens
+      → GENERATE LOOP:
+          → runFlowLMStep() — transformer_out + eos_logit
+          → flowDecode() — 8 Euler steps → 32-dim latent
+          → denormalize() → quantize() → runMimiDecoder()
+          → 1920 audio samples per frame
+  → concatenate + postprocess
+  → WAV output (24kHz mono)
+```
+
+## Key State
+
+### KV Cache
+- 6 cache tensors `[2, 1, 512, 16, 64]` + 6 position counters
+- Reset per chunk
+
+### Mimi State
+- 23 tensors for convolution history, attention caches, overlap-add buffers
+- Continuous across chunks — keeps audio seamless
+
+## Text Chunking
+
+Long text splits at 50 tokens or fewer:
+1. Sentence boundaries (`.!?`)
+2. Clause boundaries (`,;:`)
+3. Word boundaries (fallback)
+
+## CoreML Details
+
+- All 4 models loaded with `.cpuAndGPU` (ANE float16 causes artifacts in Mimi state)
+- Compiled from `.mlpackage` → `.mlmodelc` on first load, cached on disk
+- Thread-safe via actor pattern
+
+## License
+
+CC-BY-4.0, inherited from [kyutai/pocket-tts](https://huggingface.co/kyutai/pocket-tts).

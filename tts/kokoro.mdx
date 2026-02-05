@@ -1,0 +1,84 @@
+---
+title: Kokoro TTS
+description: High-quality text-to-speech synthesis with 48 voices.
+---
+
+## Overview
+
+Kokoro is a high-quality TTS backend (82M params, 48 voices). It generates all frames at once using flow matching over mel spectrograms, then converts to audio with the Vocos vocoder.
+
+Model: [FluidInference/kokoro-82m-coreml](https://huggingface.co/FluidInference/kokoro-82m-coreml)
+
+## Quick Start
+
+### CLI
+
+```bash
+swift run fluidaudio tts "Welcome to FluidAudio text to speech" \
+  --output ~/Desktop/demo.wav \
+  --voice af_heart
+```
+
+### Swift
+
+```swift
+import FluidAudioTTS
+
+let manager = TtSManager()
+try await manager.initialize()
+
+let audioData = try await manager.synthesize(text: "Hello from FluidAudio!")
+try audioData.write(to: URL(fileURLWithPath: "/tmp/demo.wav"))
+```
+
+## Chunk Metadata
+
+```swift
+let detailed = try await manager.synthesizeDetailed(
+    text: "FluidAudio can report chunk splits for you.",
+    variantPreference: .fifteenSecond
+)
+
+for chunk in detailed.chunks {
+    print("Chunk #\(chunk.index) -> variant: \(chunk.variant), tokens: \(chunk.tokenCount)")
+    print("  text: \(chunk.text)")
+}
+```
+
+## SSML Support
+
+See the [SSML documentation](/tts/ssml) for pronunciation control tags.
+
+## Kokoro vs PocketTTS
+
+| | Kokoro | PocketTTS |
+|---|---|---|
+| Text input | Phonemes (IPA via espeak) | Raw text (SentencePiece) |
+| Voice conditioning | Style embedding vector | 125 audio prompt tokens |
+| Generation | All frames at once | Frame-by-frame autoregressive |
+| Latency to first audio | Must wait for full generation | ~80ms after prefill |
+
+## Enable in Your Project
+
+### Package.swift
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/FluidInference/FluidAudio.git", from: "0.7.7"),
+],
+targets: [
+    .target(
+        name: "YourTarget",
+        dependencies: [
+            .product(name: "FluidAudioWithTTS", package: "FluidAudio")
+        ]
+    )
+]
+```
+
+### Import
+
+```swift
+import FluidAudio       // Core (ASR, diarization, VAD)
+import FluidAudioTTS    // TTS features
+```
